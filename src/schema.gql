@@ -2,6 +2,10 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Mutation {
+  user(email: String!, firstName: String!, lastName: String!, password: String!): User!
+}
+
 type Post {
   _id: String!
   author: User!
@@ -16,9 +20,9 @@ type Query {
 
 type User {
   _id: String!
-  email: String!
-  firstName: String!
+  email: String
+  firstName: String
   lastName: String
-  password: String!
+  password: String
   posts: [Post!]!
 }

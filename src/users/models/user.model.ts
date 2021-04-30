@@ -20,6 +20,6 @@ export class User {
   @Field(type => String, { nullable: true })
   password?: string;
 
-  // @Field(type => [Post], { nullable: true })
-  // posts?: Post[];
+  @Field(type => [Post], { nullable: true })
+  posts?: Post[];
 }

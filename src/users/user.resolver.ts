@@ -1,6 +1,7 @@
 import { Args, Resolver, Query, ResolveField, Parent, Mutation } from "@nestjs/graphql";
 import { Post } from "src/posts/models/post.model";
 import { PostsService } from "src/posts/posts.service";
+import { CreateUserDto } from "./dto/create.user.dto";
 import { User } from "./models/user.model";
 import { UsersService } from "./users.service";
 
@@ -23,12 +24,16 @@ export class UsersResolver {
     return this.usersService.findOneById(_id);
   }
   
-  // @Mutation(returns => User, { name: 'user' })
-  // async getUserById(
-  //   @Args('id', { type: () => String }) id: string,
-  // ) {
-  //   return this.usersService.findOneById(id);
-  // }
+  @Mutation(returns => User, { name: 'user' })
+  async createUser(
+    @Args('firstName', { type: () => String }) firstName: string,
+    @Args('lastName', { type: () => String }) lastName: string,
+    @Args('email', { type: () => String }) email: string,
+    @Args('password', { type: () => String }) password: string,
+  ) {
+    const newUser : CreateUserDto = { firstName, lastName, email, password }
+    return this.usersService.create(newUser);
+  }
 
   // @Query(returns => User, { name: 'user' })
   // async getUserByEmail(

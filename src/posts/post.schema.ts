@@ -8,16 +8,13 @@ export type PostDocument = Post & Document;
 
 @Schema()
 export class Post {
-  @Prop({ required: true })
-  _id: string;
-
   @Prop()
   title: string;
 
   @Prop()
   content: string;
   
-  @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+  @Prop({type: mongoose.Schema.Types.ObjectId, ref: Post.name})
   author: User;
 }
 

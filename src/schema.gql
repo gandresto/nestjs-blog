@@ -14,7 +14,8 @@ type Post {
 }
 
 type Query {
-  user(_id: String!): User!
+  posts: [Post!]!
+  user(id: String!): User!
   users: [User!]!
 }
 

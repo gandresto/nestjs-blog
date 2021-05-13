@@ -1,7 +1,8 @@
 import { Args, Resolver, Query, ResolveField, Parent, Mutation } from "@nestjs/graphql";
+import { FindPostInput } from "src/posts/dto/find-post.input";
 import { Post } from "src/posts/models/post.model";
 import { PostsService } from "src/posts/posts.service";
-import { CreateUserDto } from "./dto/create.user.dto";
+import { CreateUserInput } from "./dto/create-user.input";
 import { User } from "./models/user.model";
 import { UsersService } from "./users.service";
 
@@ -9,7 +10,7 @@ import { UsersService } from "./users.service";
 export class UsersResolver {
   constructor(
     private usersService: UsersService,
-    // private postsService: PostsService,
+    private postsService: PostsService,
   ) {}
 
   @Query(returns => [User], { name: 'users' })
@@ -19,9 +20,9 @@ export class UsersResolver {
 
   @Query(returns => User, { name: 'user' })
   async getUserById(
-    @Args('_id', { type: () => String }) _id: string,
+    @Args('id', { type: () => String }) id: string,
   ) {
-    return this.usersService.findOneById(_id);
+    return this.usersService.findOneById(id);
   }
   
   @Mutation(returns => User, { name: 'user' })
@@ -31,7 +32,7 @@ export class UsersResolver {
     @Args('email', { type: () => String }) email: string,
     @Args('password', { type: () => String }) password: string,
   ) {
-    const newUser : CreateUserDto = { firstName, lastName, email, password }
+    const newUser : CreateUserInput = { firstName, lastName, email, password }
     return this.usersService.create(newUser);
   }
 
@@ -45,7 +46,6 @@ export class UsersResolver {
   @ResolveField('posts', returns => [Post])
   async getPosts(@Parent() user: User) {
     const { _id } = user;
-    // return this.postsService.findAll({ userId: id });
-    return _id;
+    return (await this.usersService.findOneById(_id)).posts;;
   }
 }
